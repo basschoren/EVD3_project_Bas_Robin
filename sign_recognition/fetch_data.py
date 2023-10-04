@@ -84,7 +84,7 @@ def fetch_data(data_path):
 
 if __name__ == "__main__":
     """ Test fetching function"""
-    data_path = r'C:\Users\bassc\PycharmProjects\sign_recognition\data\sign50'
+    data_path = r'..\sign_recognition\data\sign50'
 
     gestures = fetch_data(data_path)
 

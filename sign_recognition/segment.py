@@ -15,7 +15,7 @@ def maskSignBG(img):
 
 if __name__ == "__main__":
     """ Test segmentation functions"""
-    data_path = r'C:\Users\bassc\PycharmProjects\sign_recognition\data\sign50'
+    data_path = r'..\sign_recognition\data\sign50'
 
     # grab the list of images in our data directory
     print("[INFO] loading images...")

@@ -102,6 +102,7 @@ def getBlobFeatures(img_BW):
 if __name__ == "__main__":
     """ Test feature extraction functions"""
     filename = r'C:\Users\bassc\PycharmProjects\sign_recognition\data\sign50\verkeersbord-rvv-a01-050-maximum-snelheid-50-kmh.png'
+    #filename = r'C:\Users\bassc\Github\EVD3_project_Bas_Robin\sign_recognition\data\sign50\verkeersbord-rvv-a01-50s-maximum-snelheid-50-km-h.png'
 
     # load image and blur a bit to suppress noise
     img = cv.imread(filename)
