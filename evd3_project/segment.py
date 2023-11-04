@@ -35,7 +35,7 @@ for filename in file_list:
 
 
     # Identificeer contouren in het masker
-    contours, _ = cv2.findContours(combined_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(combined_mask, cv2.RETR_EXTERNAL, cv2  .CHAIN_APPROX_SIMPLE)
 
     for contour in contours:
         epsilon = 0.04 * cv2.arcLength(contour, True)
@@ -46,7 +46,8 @@ for filename in file_list:
             center = (int(x), int(y))
 
             # Controleer of de gedetecteerde cirkel overeenkomt met een snelheidsbord
-            if radius >= 10:
+            if radius >= 8:
+
                 # Maak een masker voor het snelheidsbord
                 mask_speed = image
                 mask_speed_sign = np.zeros_like(image)
