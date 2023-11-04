@@ -3,9 +3,12 @@ import os
 import glob
 import numpy as np
 
+""" Test segmentation functions"""
+data_path = r'C:\Users\bassc\OneDrive - HAN\HAN\Leerjaar 3\EVD3 machine learning\video met snelheidsborden\Data acquisition\speed_signs'
+
 # grab the list of images in our data directory
 print("[INFO] loading images...")
-p = os.path.sep.join(['*.[jp][np][ge]*'])
+p = os.path.sep.join([data_path, '*.[jp][np][ge]*'])
 
 file_list = [f for f in glob.iglob(p, recursive=True) if (os.path.isfile(f))]
 print("[INFO] images found: {}".format(len(file_list)))
@@ -35,7 +38,7 @@ for filename in file_list:
     contours, _ = cv2.findContours(combined_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     for contour in contours:
-        epsilon = 0.03 * cv2.arcLength(contour, True)
+        epsilon = 0.04 * cv2.arcLength(contour, True)
         approx = cv2.approxPolyDP(contour, epsilon, True)
 
         if len(approx) >= 8:
@@ -50,7 +53,8 @@ for filename in file_list:
 
                 cv2.circle(mask_speed_sign, center, int(radius), (255, 255, 255), thickness=cv2.FILLED)
 
-                cv2.circle(mask_speed, center, int(radius), (0, 255, 0), thickness=2)
+                #cv2.circle(mask_speed, center, int(radius), (0, 255, 0), thickness=2)
+                cv2.drawContours(mask_speed, [contour], 0, (0, 255, 0), thickness=2)
 
                 cv2.imshow('contour', mask_speed)
 
