@@ -22,9 +22,9 @@ for filename in file_list:
     hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
     # Definieer kleurbereik voor rode kleuren
-    lower_red = (0, 100, 50)
+    lower_red = (0, 100, 25)
     upper_red = (10, 255, 255)
-    lower_red2 = (170, 100, 50)
+    lower_red2 = (170, 100, 25)
     upper_red2 = (180, 255, 255)
 
     mask_red = cv2.inRange(hsv_image, lower_red, upper_red)
@@ -41,12 +41,12 @@ for filename in file_list:
         epsilon = 0.04 * cv2.arcLength(contour, True)
         approx = cv2.approxPolyDP(contour, epsilon, True)
 
-        if len(approx) >= 8:
+        if len(approx) >= 5:
             (x, y), radius = cv2.minEnclosingCircle(contour)
             center = (int(x), int(y))
 
             # Controleer of de gedetecteerde cirkel overeenkomt met een snelheidsbord
-            if radius >= 8:
+            if radius >=  8:
 
                 # Maak een masker voor het snelheidsbord
                 mask_speed = image
@@ -54,8 +54,8 @@ for filename in file_list:
 
                 cv2.circle(mask_speed_sign, center, int(radius), (255, 255, 255), thickness=cv2.FILLED)
 
-                #cv2.circle(mask_speed, center, int(radius), (0, 255, 0), thickness=2)
-                cv2.drawContours(mask_speed, [contour], 0, (0, 255, 0), thickness=2)
+                cv2.circle(mask_speed, center, int(radius), (0, 255, 0), thickness=2)
+                #cv2.drawContours(mask_speed, [contour], 0, (0, 255, 0), thickness=2)
 
                 cv2.imshow('contour', mask_speed)
 
