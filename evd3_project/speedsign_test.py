@@ -31,7 +31,7 @@ def find_circular_contours(contours, hierarchy):
         area = cv2.contourArea(contour)
         if perimeter == 0: continue
         circularity = 4 * np.pi * (area / (perimeter * perimeter))
-        if 0.7 < circularity < 1.3:
+        if 0.6 < circularity < 1.4:
             circular_contours.append(contour)
     return circular_contours
 
@@ -50,18 +50,18 @@ def detect_traffic_sign_shape_based_on_color(image):
     speed_limit_mask = detect_speed_limit_color(image)
 
     # Vind contouren in het masker
-    contours, _ = cv2.findContours(speed_limit_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(speed_limit_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     # Filter contouren die op een cirkel lijken
-    circular_contours = find_circular_contours(contours)
+    circular_contours = find_circular_contours(contours, hierarchy)
 
     # Creëer een leeg beeld om de contouren te tekenen
-    contour_img = np.zeros_like(image)
+    #contour_img = np.zeros_like(image)
 
     # Teken de gevonden cirkelvormige contouren
-    cv2.drawContours(contour_img, circular_contours, -1, (0, 255, 0), 2)
+    cv2.drawContours(image, circular_contours, -1, (0, 255, 0), 2)
 
-    return contour_img
+    return image
 
 def crop_to_speed_limit_sign(image, circular_contours):
     # We gaan uit van één bord in de afbeelding voor eenvoud.
@@ -79,16 +79,19 @@ def crop_to_speed_limit_sign(image, circular_contours):
 
 # Voorbeeldgebruik
 if __name__ == "__main__":
-    image = cv2.imread("110.jpg")
+    image = cv2.imread("test.png")
     speed_limit_mask = detect_speed_limit_color(image)
     contours, hierarchy = cv2.findContours(speed_limit_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     circular_contours = find_circular_contours(contours, hierarchy)
-
+    draw_contour = detect_traffic_sign_shape_based_on_color(image)
     cropped_sign = crop_to_speed_limit_sign(image, circular_contours)
-    cv2.imshow("Originele Afbeelding", image)
+    color_mask = detect_traffic_sign_edges_based_on_color(draw_contour)
+    cv2.imshow("Originele Afbeelding", draw_contour)
+    cv2.imshow("color mask", color_mask)
     if cropped_sign is not None:
         cv2.imshow("Gecropte Snelheidsbord", cropped_sign)
+
         cv2.waitKey(0)
 
     cv2.destroyAllWindows()
